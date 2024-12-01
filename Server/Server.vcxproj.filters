@@ -1,0 +1,123 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="소스 파일">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;c++;cppm;ixx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="헤더 파일">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hh;hpp;hxx;h++;hm;inl;inc;ipp;xsd</Extensions>
+    </Filter>
+    <Filter Include="리소스 파일">
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+    </Filter>
+    <Filter Include="ProtoBuf">
+      <UniqueIdentifier>{79e0cb38-580d-4960-b8f4-e21d9623235d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="소스 파일\Utils">
+      <UniqueIdentifier>{3b00d743-c424-4416-8e49-c3854b100812}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="소스 파일\Socket">
+      <UniqueIdentifier>{6ed64b27-85f8-49d3-a91c-e613d130f415}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="소스 파일\Utils\StreamBuffer">
+      <UniqueIdentifier>{19895492-eb70-4c67-ac98-f84742c6109b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="소스 파일\Utils\TimeSystem">
+      <UniqueIdentifier>{b6195c32-7324-41c8-8bee-8ffe722e68c9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="소스 파일\Utils\UtilFunctions">
+      <UniqueIdentifier>{7c354352-edc7-4976-9ff2-aaaabf093877}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="소스 파일\Utils\Pools">
+      <UniqueIdentifier>{785e6775-999b-419e-8a5e-676737a1166c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="소스 파일\Utils\Pools\BufferPool">
+      <UniqueIdentifier>{9f2b7f86-5d8c-4ef8-a57b-5c646056caa7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="소스 파일\Utils\Pools\SocketPool">
+      <UniqueIdentifier>{e5d739ed-bbf6-4bf5-a6ec-d5eefeb8e5be}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="소스 파일\Utils\Pools\SessionPool">
+      <UniqueIdentifier>{0388739e-fb07-4736-8495-80b744516aa5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="소스 파일\Session">
+      <UniqueIdentifier>{c9ab3b98-93fb-4e7e-bf66-3b8c46ef151b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="소스 파일\Utils\Pools\PacketPool">
+      <UniqueIdentifier>{d4aa3b9f-d6ce-49ed-af4c-be6e8934245b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="소스 파일\PacketDispatcher">
+      <UniqueIdentifier>{813213ad-d90f-4260-8353-94813a80cc0f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="소스 파일\Main">
+      <UniqueIdentifier>{5e22bc65-42cf-4b9a-864a-7c765cd9a40a}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="NetDefine.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="ProtoBuf\testPacket.pb.h">
+      <Filter>ProtoBuf</Filter>
+    </ClInclude>
+    <ClInclude Include="Socket.h">
+      <Filter>소스 파일\Socket</Filter>
+    </ClInclude>
+    <ClInclude Include="Utils\StreamBuffer.h">
+      <Filter>소스 파일\Utils\StreamBuffer</Filter>
+    </ClInclude>
+    <ClInclude Include="Utils\TimeSystem.h">
+      <Filter>소스 파일\Utils\TimeSystem</Filter>
+    </ClInclude>
+    <ClInclude Include="Utils\Pools\BufferPool.h">
+      <Filter>소스 파일\Utils\Pools\BufferPool</Filter>
+    </ClInclude>
+    <ClInclude Include="Pattern.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="Utils\UtilFunctions.h">
+      <Filter>소스 파일\Utils\UtilFunctions</Filter>
+    </ClInclude>
+    <ClInclude Include="Session.h">
+      <Filter>소스 파일\Session</Filter>
+    </ClInclude>
+    <ClInclude Include="PacketDispatcher.h">
+      <Filter>소스 파일\PacketDispatcher</Filter>
+    </ClInclude>
+    <ClInclude Include="ServerMain.h">
+      <Filter>소스 파일\Main</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="ProtoBuf\testPacket.pb.cc">
+      <Filter>ProtoBuf</Filter>
+    </ClCompile>
+    <ClCompile Include="Socket.cpp">
+      <Filter>소스 파일\Socket</Filter>
+    </ClCompile>
+    <ClCompile Include="Utils\StreamBuffer.cpp">
+      <Filter>소스 파일\Utils\StreamBuffer</Filter>
+    </ClCompile>
+    <ClCompile Include="Utils\TimeSystem.cpp">
+      <Filter>소스 파일\Utils\TimeSystem</Filter>
+    </ClCompile>
+    <ClCompile Include="Utils\Pools\BufferPool.cpp">
+      <Filter>소스 파일\Utils\Pools\BufferPool</Filter>
+    </ClCompile>
+    <ClCompile Include="Utils\UtilFunctions.cpp">
+      <Filter>소스 파일\Utils\UtilFunctions</Filter>
+    </ClCompile>
+    <ClCompile Include="Session.cpp">
+      <Filter>소스 파일\Session</Filter>
+    </ClCompile>
+    <ClCompile Include="PacketDispatcher.cpp">
+      <Filter>소스 파일\PacketDispatcher</Filter>
+    </ClCompile>
+    <ClCompile Include="ServerMain.cpp">
+      <Filter>소스 파일\Main</Filter>
+    </ClCompile>
+  </ItemGroup>
+</Project>
