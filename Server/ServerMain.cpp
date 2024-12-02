@@ -1,5 +1,6 @@
 #include "ServerMain.h"
 #include "Socket.h"
+#include "Session.h"
 
 bool ServerMain::Initialize()
 {
@@ -26,11 +27,14 @@ bool ServerMain::Initialize()
 		WritePrivateProfileString(L"Server", L"Port", std::to_wstring(ServerPort).c_str(), configFilePath.c_str());
 #ifndef _SERVER_
 		WritePrivateProfileString(L"Server", L"Ip", L"127.0.0.1", configFilePath.c_str());
+#else
+		WritePrivateProfileString(L"Server", L"ThreadCount", std::to_wstring(ThreadCount).c_str(), configFilePath.c_str());
 #endif
 		// Buffer
 		WritePrivateProfileString(L"Buffer", L"Size", std::to_wstring(SizePerBuffer).c_str(), configFilePath.c_str());
 #ifdef _SERVER_
 		WritePrivateProfileString(L"Buffer", L"BlockPerCount", std::to_wstring(SizePerBuffer).c_str(), configFilePath.c_str());
+		WritePrivateProfileString(L"Pool", L"PacketPool", std::to_wstring(PacketPoolCount).c_str(), configFilePath.c_str());
 #endif
 	}
 	
@@ -38,17 +42,20 @@ bool ServerMain::Initialize()
 	bufferSize = GetPrivateProfileInt(L"Buffer", L"Size", SizePerBuffer, configFilePath.c_str());
 #ifdef _SERVER_
 	bufferPoolCount = GetPrivateProfileInt(L"Buffer", L"BlockPerCount", BufferPoolCount, configFilePath.c_str());
+	int threadCount = GetPrivateProfileInt(L"Server", L"ThreadCount", ThreadCount, configFilePath.c_str());
+	int packetExpandSize = GetPrivateProfileInt(L"Pool", L"PacketPool", PacketPoolCount, configFilePath.c_str());
 #else
 	std::wstring serverIp(INET_ADDRSTRLEN, L'\0');
 	GetPrivateProfileString(L"Server", L"Ip", L"127.0.0.1", serverIp.data(), INET_ADDRSTRLEN, configFilePath.c_str());
 	std::string ip = WStringToString(serverIp);
-
+	int threadCount = 1;
 #endif	
 
 
 	// TODO - 2 : Create Pools -> Server Only
 #ifdef _SERVER_
 	BufferPool::GetInstance()->Initialize(bufferSize, bufferPoolCount);
+	PacketPool::GetInstance()->Initialize(packetExpandSize);
 
 #endif
 
@@ -93,6 +100,80 @@ bool ServerMain::Initialize()
 
 #endif
 
+	// TODO - 4 : CreateCompletionPort
+	// Server : custom thread count, Client : 1 thread
+	HANDLE completionPort = CreateIoCompletionPort(INVALID_HANDLE_VALUE, NULL, 0, threadCount);
+	_completionPortList.push_back(completionPort);
+
+
 
 	return true;
+}
+
+void ServerMain::Finalize()
+{
+	// TODO : 현재 연결돼있는 모든 세션에 대해 종료 패킷을 전송해야 합니다.
+
+}
+
+void ServerMain::CreateAcceptThread(HANDLE completionPort)
+{
+	auto acceptWork = [this](HANDLE completionPort) {
+		SOCKADDR_IN clientAddr;
+		int len = sizeof(clientAddr);
+
+		while (true) {
+			SOCKET client = accept(_socket->GetSocket(), PtrCast(SOCKADDR*, &clientAddr), &len);
+			if (client == INVALID_SOCKET) {
+				int error = WSAGetLastError();
+				if (error == WSAENOTSOCK || error == WSAEINTR) {
+					std::cout << "Server Socket Closed\n";
+					break;
+				}
+				continue;
+			}
+			// TODO : CreateSession.
+		}
+		
+	};
+	std::thread acceptThread(acceptWork, completionPort);
+	acceptThread.detach();
+}
+
+void ServerMain::CreateIOThread(HANDLE completionPort)
+{
+	auto IOWork = [this](HANDLE completionPort) {
+		DWORD byteTransferred;
+		ULONG_PTR completionKey;
+		OVERLAPPED* overlapped;
+		while (true) {
+			bool res = true;
+
+			res = GetQueuedCompletionStatus(completionPort, &byteTransferred, &completionKey, &overlapped, INFINITE);
+
+			if (overlapped == nullptr) {
+				continue;
+			}
+			if (overlapped->Internal < 0) {
+				printf("<<Error>> Code : %d\n", WSAGetLastError());
+			}
+			if (static_cast<DWORD>(overlapped->Internal) == STATUS_PENDING) {
+				printf("작업이 완료되지 않았습니다.\n");
+			}
+
+			Session* session = (Session*)completionKey;
+			if (res == false && byteTransferred == 0) {
+				// 클라이언트에서 closesocket 호출
+				int error = WSAGetLastError();
+
+				SessionID id = session->GetSessionId();
+				if (_sessionMap.find(id) != _sessionMap.end()) {
+					delete _sessionMap[id];
+					_sessionMap.erase(id);
+				}
+				continue;
+			}
+
+		}
+	};
 }

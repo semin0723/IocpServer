@@ -22,9 +22,10 @@
 
 // ================ UTILS ================
 #include "Utils/TimeSystem.h"
-#include "Utils/Pools/BufferPool.h"
 #include "Utils/StreamBuffer.h"
 #include "Utils/UtilFunctions.h"
+#include "Utils/Pools/BufferPool.h"
+#include "Utils/Pools/PacketPool.h"
 
 
 // ======== ProtoBuffer Includes =========
@@ -48,6 +49,8 @@ static constexpr int ServerPort = 6060;
 static constexpr int PacketHeaderSize = 4;
 static constexpr int BufferPoolCount = 512;
 static constexpr int SizePerBuffer = 8192; // 8kb
+static constexpr int ThreadCount = 4;
+static constexpr int PacketPoolCount = 500;
 
 // =========== PacketHeader ==============
 enum class PID : short {

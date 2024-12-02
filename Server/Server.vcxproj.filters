@@ -90,6 +90,9 @@
     <ClInclude Include="ServerMain.h">
       <Filter>소스 파일\Main</Filter>
     </ClInclude>
+    <ClInclude Include="Utils\Pools\PacketPool.h">
+      <Filter>소스 파일\Utils\Pools\PacketPool</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="ProtoBuf\testPacket.pb.cc">
@@ -118,6 +121,9 @@
     </ClCompile>
     <ClCompile Include="ServerMain.cpp">
       <Filter>소스 파일\Main</Filter>
+    </ClCompile>
+    <ClCompile Include="Utils\Pools\PacketPool.cpp">
+      <Filter>소스 파일\Utils\Pools\PacketPool</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

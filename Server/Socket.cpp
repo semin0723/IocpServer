@@ -37,7 +37,7 @@ void Socket::Close()
     }
 }
 
-bool Socket::Recv(char*& buf, int size)
+bool Socket::Recv(char*& buf, int size, OVERLAPPED& overlapped)
 {
     _recvWsa.buf = buf;
     _recvWsa.len = size;
@@ -45,7 +45,7 @@ bool Socket::Recv(char*& buf, int size)
     DWORD flg = 0;
     DWORD recvByte = 0;
 
-    int res = WSARecv(_socket, &_recvWsa, 1, &recvByte, &flg, &_recvOverlapped, NULL);
+    int res = WSARecv(_socket, &_recvWsa, 1, &recvByte, &flg, &overlapped, NULL);
 
     if (res < 0) {
         if (GetLastError() != WSA_IO_PENDING) {
@@ -56,13 +56,13 @@ bool Socket::Recv(char*& buf, int size)
     return true;
 }
 
-bool Socket::Send(char*& buf, int size)
+bool Socket::Send(char*& buf, int size, OVERLAPPED& overlapped)
 {
     _sendWsa.buf = buf;
     _sendWsa.len = size;
 
     DWORD sendByte = 0;
-    int res = WSASend(_socket, &_sendWsa, 1, &sendByte, 0, &_sendOverlapped, NULL);
+    int res = WSASend(_socket, &_sendWsa, 1, &sendByte, 0, &overlapped, NULL);
 
     if (res < 0) {
         if (GetLastError() != WSA_IO_PENDING) {

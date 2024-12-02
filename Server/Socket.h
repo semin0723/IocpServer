@@ -29,9 +29,12 @@ public:
 	bool Listen();
 	void Open(SOCKET socket);
 
+	// size에는 총 버퍼의 크기를 넣어주면 됩니다.
+	bool Recv(char*& buf, int size, OVERLAPPED& overlapped);
+	// size에는 보낼 데이터의 총 사이즈를 넣어주면 됩니다.
+	bool Send(char*& buf, int size, OVERLAPPED& overlapped);
 
-	bool Recv(char*& buf, int size);
-	bool Send(char*& buf, int size);
+	SOCKET& GetSocket() { return _socket; }
 
 private:
 	SOCKET _socket = INVALID_SOCKET;
@@ -40,9 +43,6 @@ private:
 	WSABUF _sendWsa{};
 
 	int _protocol = -1;
-
-	OVERLAPPED _recvOverlapped;
-	OVERLAPPED _sendOverlapped;
 
 	Socket(Socket&) = delete;
 	Socket(Socket&&) = delete;
