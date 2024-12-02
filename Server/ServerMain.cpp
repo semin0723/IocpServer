@@ -25,7 +25,7 @@ bool ServerMain::Initialize()
 		// Server
 		WritePrivateProfileString(L"Server", L"Port", std::to_wstring(ServerPort).c_str(), configFilePath.c_str());
 #ifndef _SERVER_
-		WritePrivateProfileString(L"Server", L"Ip", L"255.255.255.255", configFilePath.c_str());
+		WritePrivateProfileString(L"Server", L"Ip", L"127.0.0.1", configFilePath.c_str());
 #endif
 		// Buffer
 		WritePrivateProfileString(L"Buffer", L"Size", std::to_wstring(SizePerBuffer).c_str(), configFilePath.c_str());
