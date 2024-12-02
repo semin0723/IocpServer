@@ -10,6 +10,8 @@ public:
 	Session();
 	virtual ~Session();
 
+	void Initialize(Socket* socket);
+
 	bool RecvUpdate();
 	bool SendUpdate();
 

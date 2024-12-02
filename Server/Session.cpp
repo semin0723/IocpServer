@@ -21,6 +21,13 @@ Session::~Session()
 	delete _recvTempBuffer;
 	BufferPool::GetInstance()->ReleaseBuffer(_recvBuffer);
 	BufferPool::GetInstance()->ReleaseBuffer(_sendBuffer);
+	
+	delete _socket;
+}
+
+void Session::Initialize(Socket* socket)
+{
+	_socket = socket;
 }
 
 bool Session::RecvUpdate()

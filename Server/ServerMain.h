@@ -26,6 +26,7 @@ private:
 	void CreateIOThread(HANDLE completionPort);
 #ifdef _SERVER_
 	SessionMap _sessionMap;
+	std::mutex _mutex;
 	CompletionPortList _completionPortList;
 #endif
 };

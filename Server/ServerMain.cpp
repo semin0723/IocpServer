@@ -133,8 +133,17 @@ void ServerMain::CreateAcceptThread(HANDLE completionPort)
 				continue;
 			}
 			// TODO : CreateSession.
+			Socket* socket = new Socket();
+			socket->Initialize(client, clientAddr);
+
+			Session* newSession = new Session();
+			newSession->Initialize(socket);
+			{
+				Lock lock(_mutex);
+				_sessionMap.insert({ newSession->GetSessionId(), newSession });
+			}
+
 		}
-		
 	};
 	std::thread acceptThread(acceptWork, completionPort);
 	acceptThread.detach();

@@ -30,6 +30,12 @@ bool Socket::Initialize(int port, SocketType socketType, const char* serverIp, i
     return true;
 }
 
+void Socket::Initialize(SOCKET socket, SOCKADDR_IN addr)
+{
+    _socket = socket;
+    _socketAddr = addr;
+}
+
 void Socket::Close()
 {
     if (_socket != INVALID_SOCKET) {
