@@ -16,7 +16,7 @@ public:
 
 	// Protocol Default = TCP
 	// TODO : 클라이언트에서 이 함수를 실행할 때는 두 번째 매개변수의 값을 변경해줘야 합니다.
-	bool Initialize(int port, int protocol = IPPROTO_TCP, SocketType socketType = SocketType::Listen);
+	bool Initialize(int port, SocketType socketType = SocketType::Listen, const char* serverIp = "127.0.0.1", int protocol = IPPROTO_TCP);
 
 	bool Open();
 	void Close();

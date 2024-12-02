@@ -1,6 +1,7 @@
 #include "ServerMain.h"
+#include "Socket.h"
 
-void ServerMain::Initialize()
+bool ServerMain::Initialize()
 {
 	// TODO - 1 : Check Config -> Server, Client 분류에 따라 불러오는 config 파일이 달라짐.
 	// 파일명 : Config.ini 로 동일.
@@ -40,6 +41,8 @@ void ServerMain::Initialize()
 #else
 	std::wstring serverIp(INET_ADDRSTRLEN, L'\0');
 	GetPrivateProfileString(L"Server", L"Ip", L"127.0.0.1", serverIp.data(), INET_ADDRSTRLEN, configFilePath.c_str());
+	std::string ip = WStringToString(serverIp);
+
 #endif	
 
 
@@ -52,11 +55,44 @@ void ServerMain::Initialize()
 	// TODO - 3 : Listen Socket Open -> Server Only
 	// TODO - 3 : Create Connect Socket -> Client Only
 	// TODO - 3 : Server Connect -> Client Only
+
+	WSADATA wsaData;
+	if (WSAStartup(MAKEWORD(2, 2), &wsaData) != 0) {
+		return false;
+	}
+
+	bool res = true;
+	_socket = new Socket();
+
 #ifdef _SERVER_
+	_socket->Initialize(port);
+	if (res == false) {
+		return false;
+	}
+
+	res = _socket->Bind();
+	if (res == false) {
+		return false;
+	}
+
+	res = _socket->Listen();
+	if (res == false) {
+		return false;
+	}
 
 #else
+	res = _socket->Initialize(port, SocketType::Client, ip.c_str());
+	if (res == false) {
+		return false;
+	}
+
+	res = _socket->Connect();
+	if (res == false) {
+		return false;
+	}
 
 #endif
 
 
+	return true;
 }

@@ -5,7 +5,7 @@ Socket::~Socket()
     Close();
 }
 
-bool Socket::Initialize(int port, int protocol, SocketType socketType)
+bool Socket::Initialize(int port, SocketType socketType, const char* serverIp, int protocol)
 {
     _protocol = protocol;
     bool res = true;
@@ -18,8 +18,14 @@ bool Socket::Initialize(int port, int protocol, SocketType socketType)
     }
 
     _socketAddr.sin_family = AF_INET;
-    _socketAddr.sin_addr.s_addr = htonl(INADDR_ANY);
     _socketAddr.sin_port = htons(port);
+#ifdef _SERVER_
+    _socketAddr.sin_addr.s_addr = htonl(INADDR_ANY);
+#else
+    if (inet_pton(AF_INET, serverIp, &(_socketAddr.sin_addr)) != 1) {
+        return false;
+    }
+#endif
 
     return true;
 }
