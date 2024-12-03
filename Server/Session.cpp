@@ -54,6 +54,16 @@ bool Session::SendUpdate()
 	return true;
 }
 
+int Session::CheckOverlappedStatus(OVERLAPPED* overlapped)
+{
+	if (overlapped == &_recvOverlapped) {
+		return 1;
+	}
+	else {
+		return 2;
+	}
+}
+
 void Session::SaveCompletePacket()
 {
 	// TODO : 데이터를 넣을 Packet박스를 Pool에게서 얻어와야 합니다.

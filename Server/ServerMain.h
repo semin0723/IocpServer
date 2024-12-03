@@ -19,16 +19,20 @@ public:
 
 	bool Initialize();
 	void Finalize();
+	void ReleaseThread();
 private:
 	Socket* _socket = nullptr;
 
-	void CreateAcceptThread(HANDLE completionPort);
 	void CreateIOThread(HANDLE completionPort);
 #ifdef _SERVER_
 	SessionMap _sessionMap;
 	std::mutex _mutex;
-	CompletionPortList _completionPortList;
+	void CreateAcceptThread(HANDLE completionPort);
+#else
+	Session* _session = nullptr;
 #endif
+	CompletionPortList _completionPortList;
+
 };
 
 #endif

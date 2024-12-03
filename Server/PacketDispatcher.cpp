@@ -16,16 +16,17 @@ void PacketDispatcher::SaveRecvPacket(std::unique_ptr<Packet>& packet)
 	_recievedPacket.push(std::move(packet));
 }
 
-void PacketDispatcher::SaveSendPacket(std::unique_ptr<Packet>& packet, SessionID sid)
-{
-	Lock lock(_sendMutex);
-	_pendingSendPacket[sid].push(std::move(packet));
-}
-
 void PacketDispatcher::SwapRecvPacketQueue(PacketQueue& queue)
 {
 	Lock lock(_recvMutex);
 	std::swap(queue, _recievedPacket);
+}
+
+#ifdef _SERVER_
+void PacketDispatcher::SaveSendPacket(std::unique_ptr<Packet>& packet, SessionID sid)
+{
+	Lock lock(_sendMutex);
+	_pendingSendPacket[sid].push(std::move(packet));
 }
 
 void PacketDispatcher::SwapSendPacketQueue(PacketQueue& queue, SessionID sid)
@@ -38,3 +39,16 @@ void PacketDispatcher::SessionCreated(SessionID sid)
 {
 	_pendingSendPacket.insert({ sid, PacketQueue() });
 }
+#else
+void PacketDispatcher::SaveSendPacket(std::unique_ptr<Packet>& packet)
+{
+	Lock lock(_sendMutex);
+	_pendingSendPacket.push(std::move(packet));
+}
+
+void PacketDispatcher::SwapSendPacketQueue(PacketQueue& queue)
+{
+	Lock lock(_sendMutex);
+	std::swap(queue, _pendingSendPacket);
+}
+#endif

@@ -102,10 +102,19 @@ bool ServerMain::Initialize()
 
 	// TODO - 4 : CreateCompletionPort
 	// Server : custom thread count, Client : 1 thread
+	// Client : 서버와 통신하기 위한 세션 생성.
 	HANDLE completionPort = CreateIoCompletionPort(INVALID_HANDLE_VALUE, NULL, 0, threadCount);
 	_completionPortList.push_back(completionPort);
 
-
+#ifdef _SERVER_
+	CreateAcceptThread(completionPort);
+#else
+	_session = new Session();
+	_session->Initialize(_socket);
+#endif
+	for (int i = 0; i < threadCount; i++) {
+		CreateIOThread(completionPort);
+	}
 
 	return true;
 }
@@ -116,6 +125,12 @@ void ServerMain::Finalize()
 
 }
 
+void ServerMain::ReleaseThread()
+{
+
+}
+
+#ifdef _SERVER_
 void ServerMain::CreateAcceptThread(HANDLE completionPort)
 {
 	auto acceptWork = [this](HANDLE completionPort) {
@@ -138,16 +153,22 @@ void ServerMain::CreateAcceptThread(HANDLE completionPort)
 
 			Session* newSession = new Session();
 			newSession->Initialize(socket);
+
+			HANDLE handle = CreateIoCompletionPort((HANDLE)_socket->GetSocket(), completionPort, (ULONG_PTR)newSession, 0);
+			if (handle == nullptr) {
+				printf("Invalid Handle. [Location : CreateAcceptThread]\n");
+			}
+
 			{
 				Lock lock(_mutex);
 				_sessionMap.insert({ newSession->GetSessionId(), newSession });
 			}
-
 		}
 	};
 	std::thread acceptThread(acceptWork, completionPort);
 	acceptThread.detach();
 }
+#endif
 
 void ServerMain::CreateIOThread(HANDLE completionPort)
 {
@@ -170,6 +191,7 @@ void ServerMain::CreateIOThread(HANDLE completionPort)
 				printf("작업이 완료되지 않았습니다.\n");
 			}
 
+#ifdef _SERVER_
 			Session* session = (Session*)completionKey;
 			if (res == false && byteTransferred == 0) {
 				// 클라이언트에서 closesocket 호출
@@ -183,6 +205,28 @@ void ServerMain::CreateIOThread(HANDLE completionPort)
 				continue;
 			}
 
+			int status = session->CheckOverlappedStatus(overlapped);
+
+			if (status == 1) {
+				session->RecvUpdate();
+			}
+			else {
+				session->SendUpdate();
+			}
+#else
+			int status = _session->CheckOverlappedStatus(overlapped);
+
+			if (status == 1) {
+				_session->RecvUpdate();
+			}
+			else {
+				_session->SendUpdate();
+			}
+#endif
+
 		}
 	};
+
+	std::thread ioThread(IOWork, completionPort);
+	ioThread.detach();
 }

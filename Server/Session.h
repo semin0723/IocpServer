@@ -15,7 +15,8 @@ public:
 	bool RecvUpdate();
 	bool SendUpdate();
 
-
+	// return 1 : recvOverlapped, return 2 : sendOverlapped.
+	int CheckOverlappedStatus(OVERLAPPED* overlapped);
 
 #ifdef _SERVER_
 private:
