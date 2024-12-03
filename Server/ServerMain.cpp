@@ -52,12 +52,22 @@ bool ServerMain::Initialize()
 	int threadCount = 1;
 #endif	
 
+	printf("Server Port : %d", port);
+	printf("Buffer Size : %d", bufferSize);
+#ifdef _SERVER_
+	printf("Buffer Pool Size : %d", bufferPoolCount);
+	printf("PacketPool expand Size : %d", packetExpandSize);
+#endif
+	printf("Thread Count : %d", threadCount);
 	printf("Config Setting Complete\n");
 
 	// TODO - 2 : Create Pools -> Server Only
 #ifdef _SERVER_
 	BufferPool::GetInstance()->Initialize(bufferSize, bufferPoolCount);
+	printf("BufferPool Initialize Completed\n");
+
 	PacketPool::GetInstance()->Initialize(packetExpandSize);
+	printf("PacketPool Initialize Completed\n");
 
 #endif
 
