@@ -18,7 +18,7 @@
 
 // ============= Defines =================
 // TODO : 클라이언트에서는 주석을 걸어주세요.
-//#define _SERVER_
+#define _SERVER_
 
 // ================ UTILS ================
 #include "Utils/TimeSystem.h"

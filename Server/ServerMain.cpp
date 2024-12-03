@@ -4,6 +4,7 @@
 
 bool ServerMain::Initialize()
 {
+	printf("Start Initializing...\n");
 	// TODO - 1 : Check Config -> Server, Client 분류에 따라 불러오는 config 파일이 달라짐.
 	// 파일명 : Config.ini 로 동일.
 
@@ -51,6 +52,7 @@ bool ServerMain::Initialize()
 	int threadCount = 1;
 #endif	
 
+	printf("Config Setting Complete\n");
 
 	// TODO - 2 : Create Pools -> Server Only
 #ifdef _SERVER_
@@ -68,6 +70,8 @@ bool ServerMain::Initialize()
 		return false;
 	}
 
+	printf("WSAStartUp Complete\n");
+
 	bool res = true;
 	_socket = new Socket();
 
@@ -76,16 +80,19 @@ bool ServerMain::Initialize()
 	if (res == false) {
 		return false;
 	}
+	printf("Socket Initialize Complete\n");
 
 	res = _socket->Bind();
 	if (res == false) {
 		return false;
 	}
+	printf("Socket Bind Complete\n");
 
 	res = _socket->Listen();
 	if (res == false) {
 		return false;
 	}
+	printf("Socket Start Listening\n");
 
 #else
 	res = _socket->Initialize(port, SocketType::Client, ip.c_str());
@@ -106,8 +113,11 @@ bool ServerMain::Initialize()
 	HANDLE completionPort = CreateIoCompletionPort(INVALID_HANDLE_VALUE, NULL, 0, threadCount);
 	_completionPortList.push_back(completionPort);
 
+	printf("CompletionPort Created.\n");
+
 #ifdef _SERVER_
 	CreateAcceptThread(completionPort);
+	printf("Accept Thread Created.\n");
 #else
 	_session = new Session();
 	_session->Initialize(_socket);
@@ -117,6 +127,9 @@ bool ServerMain::Initialize()
 	for (int i = 0; i < threadCount; i++) {
 		CreateIOThread(completionPort);
 	}
+	printf("IOThread Created\n");
+
+	printf("Initialize Completed\n");
 
 	return true;
 }
@@ -165,6 +178,7 @@ void ServerMain::CreateAcceptThread(HANDLE completionPort)
 				Lock lock(_mutex);
 				_sessionMap.insert({ newSession->GetSessionId(), newSession });
 			}
+			printf("Session Created\n");
 		}
 	};
 	std::thread acceptThread(acceptWork, completionPort);
