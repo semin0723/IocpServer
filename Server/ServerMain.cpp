@@ -1,6 +1,7 @@
 #include "ServerMain.h"
 #include "Socket.h"
 #include "Session.h"
+#include "PacketDispatcher.h"
 
 bool ServerMain::Initialize()
 {
@@ -52,13 +53,15 @@ bool ServerMain::Initialize()
 	int threadCount = 1;
 #endif	
 
-	printf("Server Port : %d", port);
-	printf("Buffer Size : %d", bufferSize);
+	printf("Target Platform : %s\n", WStringToString(platform));
+
+	printf("Server Port : %d\n", port);
+	printf("Buffer Size : %d\n", bufferSize);
 #ifdef _SERVER_
-	printf("Buffer Pool Size : %d", bufferPoolCount);
-	printf("PacketPool expand Size : %d", packetExpandSize);
+	printf("Buffer Pool Size : %d\n", bufferPoolCount);
+	printf("PacketPool expand Size : %d\n", packetExpandSize);
 #endif
-	printf("Thread Count : %d", threadCount);
+	printf("Thread Count : %d\n", threadCount);
 	printf("Config Setting Complete\n");
 
 	// TODO - 2 : Create Pools -> Server Only
@@ -71,9 +74,12 @@ bool ServerMain::Initialize()
 
 #endif
 
-	// TODO - 3 : Listen Socket Open -> Server Only
-	// TODO - 3 : Create Connect Socket -> Client Only
-	// TODO - 3 : Server Connect -> Client Only
+	// TODO - 3 : Initialize Packet Dispatcher
+	PacketDispatcher::GetInstance()->Initialize();
+
+	// TODO - 4 : Listen Socket Open -> Server Only
+	// TODO - 4 : Create Connect Socket -> Client Only
+	// TODO - 4 : Server Connect -> Client Only
 
 	WSADATA wsaData;
 	if (WSAStartup(MAKEWORD(2, 2), &wsaData) != 0) {

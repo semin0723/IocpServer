@@ -49,43 +49,43 @@ struct TableStruct_testPacket_2eproto {
 };
 extern const ::google::protobuf::internal::DescriptorTable
     descriptor_table_testPacket_2eproto;
-namespace sample {
-class TestReq;
-struct TestReqDefaultTypeInternal;
-extern TestReqDefaultTypeInternal _TestReq_default_instance_;
-class TestResult;
-struct TestResultDefaultTypeInternal;
-extern TestResultDefaultTypeInternal _TestResult_default_instance_;
-}  // namespace sample
+namespace TestPacket {
+class TestInt;
+struct TestIntDefaultTypeInternal;
+extern TestIntDefaultTypeInternal _TestInt_default_instance_;
+class TestString;
+struct TestStringDefaultTypeInternal;
+extern TestStringDefaultTypeInternal _TestString_default_instance_;
+}  // namespace TestPacket
 namespace google {
 namespace protobuf {
 }  // namespace protobuf
 }  // namespace google
 
-namespace sample {
+namespace TestPacket {
 
 // ===================================================================
 
 
 // -------------------------------------------------------------------
 
-class TestResult final : public ::google::protobuf::Message
-/* @@protoc_insertion_point(class_definition:sample.TestResult) */ {
+class TestString final : public ::google::protobuf::Message
+/* @@protoc_insertion_point(class_definition:TestPacket.TestString) */ {
  public:
-  inline TestResult() : TestResult(nullptr) {}
-  ~TestResult() PROTOBUF_FINAL;
+  inline TestString() : TestString(nullptr) {}
+  ~TestString() PROTOBUF_FINAL;
   template <typename = void>
-  explicit PROTOBUF_CONSTEXPR TestResult(
+  explicit PROTOBUF_CONSTEXPR TestString(
       ::google::protobuf::internal::ConstantInitialized);
 
-  inline TestResult(const TestResult& from) : TestResult(nullptr, from) {}
-  inline TestResult(TestResult&& from) noexcept
-      : TestResult(nullptr, std::move(from)) {}
-  inline TestResult& operator=(const TestResult& from) {
+  inline TestString(const TestString& from) : TestString(nullptr, from) {}
+  inline TestString(TestString&& from) noexcept
+      : TestString(nullptr, std::move(from)) {}
+  inline TestString& operator=(const TestString& from) {
     CopyFrom(from);
     return *this;
   }
-  inline TestResult& operator=(TestResult&& from) noexcept {
+  inline TestString& operator=(TestString&& from) noexcept {
     if (this == &from) return *this;
     if (GetArena() == from.GetArena()
 #ifdef PROTOBUF_FORCE_COPY_IN_MOVE
@@ -117,16 +117,16 @@ class TestResult final : public ::google::protobuf::Message
   static const ::google::protobuf::Reflection* GetReflection() {
     return default_instance().GetMetadata().reflection;
   }
-  static const TestResult& default_instance() {
+  static const TestString& default_instance() {
     return *internal_default_instance();
   }
-  static inline const TestResult* internal_default_instance() {
-    return reinterpret_cast<const TestResult*>(
-        &_TestResult_default_instance_);
+  static inline const TestString* internal_default_instance() {
+    return reinterpret_cast<const TestString*>(
+        &_TestString_default_instance_);
   }
   static constexpr int kIndexInFileMessages = 1;
-  friend void swap(TestResult& a, TestResult& b) { a.Swap(&b); }
-  inline void Swap(TestResult* other) {
+  friend void swap(TestString& a, TestString& b) { a.Swap(&b); }
+  inline void Swap(TestString* other) {
     if (other == this) return;
 #ifdef PROTOBUF_FORCE_COPY_IN_SWAP
     if (GetArena() != nullptr && GetArena() == other->GetArena()) {
@@ -138,7 +138,7 @@ class TestResult final : public ::google::protobuf::Message
       ::google::protobuf::internal::GenericSwap(this, other);
     }
   }
-  void UnsafeArenaSwap(TestResult* other) {
+  void UnsafeArenaSwap(TestString* other) {
     if (other == this) return;
     ABSL_DCHECK(GetArena() == other->GetArena());
     InternalSwap(other);
@@ -146,13 +146,13 @@ class TestResult final : public ::google::protobuf::Message
 
   // implements Message ----------------------------------------------
 
-  TestResult* New(::google::protobuf::Arena* arena = nullptr) const PROTOBUF_FINAL {
-    return ::google::protobuf::Message::DefaultConstruct<TestResult>(arena);
+  TestString* New(::google::protobuf::Arena* arena = nullptr) const PROTOBUF_FINAL {
+    return ::google::protobuf::Message::DefaultConstruct<TestString>(arena);
   }
   using ::google::protobuf::Message::CopyFrom;
-  void CopyFrom(const TestResult& from);
+  void CopyFrom(const TestString& from);
   using ::google::protobuf::Message::MergeFrom;
-  void MergeFrom(const TestResult& from) { TestResult::MergeImpl(*this, from); }
+  void MergeFrom(const TestString& from) { TestString::MergeImpl(*this, from); }
 
   private:
   static void MergeImpl(
@@ -189,16 +189,16 @@ class TestResult final : public ::google::protobuf::Message
   private:
   void SharedCtor(::google::protobuf::Arena* arena);
   void SharedDtor();
-  void InternalSwap(TestResult* other);
+  void InternalSwap(TestString* other);
  private:
   friend class ::google::protobuf::internal::AnyMetadata;
-  static ::absl::string_view FullMessageName() { return "sample.TestResult"; }
+  static ::absl::string_view FullMessageName() { return "TestPacket.TestString"; }
 
  protected:
-  explicit TestResult(::google::protobuf::Arena* arena);
-  TestResult(::google::protobuf::Arena* arena, const TestResult& from);
-  TestResult(::google::protobuf::Arena* arena, TestResult&& from) noexcept
-      : TestResult(arena) {
+  explicit TestString(::google::protobuf::Arena* arena);
+  TestString(::google::protobuf::Arena* arena, const TestString& from);
+  TestString(::google::protobuf::Arena* arena, TestString&& from) noexcept
+      : TestString(arena) {
     *this = ::std::move(from);
   }
   const ::google::protobuf::Message::ClassData* GetClassData() const PROTOBUF_FINAL;
@@ -210,30 +210,36 @@ class TestResult final : public ::google::protobuf::Message
 
   // accessors -------------------------------------------------------
   enum : int {
-    kTestIdFieldNumber = 1,
+    kValueFieldNumber = 1,
   };
-  // optional uint32 TestId = 1;
-  bool has_testid() const;
-  void clear_testid() ;
-  ::uint32_t testid() const;
-  void set_testid(::uint32_t value);
+  // optional string value = 1;
+  bool has_value() const;
+  void clear_value() ;
+  const std::string& value() const;
+  template <typename Arg_ = const std::string&, typename... Args_>
+  void set_value(Arg_&& arg, Args_... args);
+  std::string* mutable_value();
+  PROTOBUF_NODISCARD std::string* release_value();
+  void set_allocated_value(std::string* value);
 
   private:
-  ::uint32_t _internal_testid() const;
-  void _internal_set_testid(::uint32_t value);
+  const std::string& _internal_value() const;
+  inline PROTOBUF_ALWAYS_INLINE void _internal_set_value(
+      const std::string& value);
+  std::string* _internal_mutable_value();
 
   public:
-  // @@protoc_insertion_point(class_scope:sample.TestResult)
+  // @@protoc_insertion_point(class_scope:TestPacket.TestString)
  private:
   class _Internal;
   friend class ::google::protobuf::internal::TcParser;
   static const ::google::protobuf::internal::TcParseTable<
       0, 1, 0,
-      0, 2>
+      35, 2>
       _table_;
 
   static constexpr const void* _raw_default_instance_ =
-      &_TestResult_default_instance_;
+      &_TestString_default_instance_;
 
   friend class ::google::protobuf::MessageLite;
   friend class ::google::protobuf::Arena;
@@ -248,10 +254,10 @@ class TestResult final : public ::google::protobuf::Message
                           ::google::protobuf::Arena* arena);
     inline explicit Impl_(::google::protobuf::internal::InternalVisibility visibility,
                           ::google::protobuf::Arena* arena, const Impl_& from,
-                          const TestResult& from_msg);
+                          const TestString& from_msg);
     ::google::protobuf::internal::HasBits<1> _has_bits_;
     mutable ::google::protobuf::internal::CachedSize _cached_size_;
-    ::uint32_t testid_;
+    ::google::protobuf::internal::ArenaStringPtr value_;
     PROTOBUF_TSAN_DECLARE_MEMBER
   };
   union { Impl_ _impl_; };
@@ -259,23 +265,23 @@ class TestResult final : public ::google::protobuf::Message
 };
 // -------------------------------------------------------------------
 
-class TestReq final : public ::google::protobuf::Message
-/* @@protoc_insertion_point(class_definition:sample.TestReq) */ {
+class TestInt final : public ::google::protobuf::Message
+/* @@protoc_insertion_point(class_definition:TestPacket.TestInt) */ {
  public:
-  inline TestReq() : TestReq(nullptr) {}
-  ~TestReq() PROTOBUF_FINAL;
+  inline TestInt() : TestInt(nullptr) {}
+  ~TestInt() PROTOBUF_FINAL;
   template <typename = void>
-  explicit PROTOBUF_CONSTEXPR TestReq(
+  explicit PROTOBUF_CONSTEXPR TestInt(
       ::google::protobuf::internal::ConstantInitialized);
 
-  inline TestReq(const TestReq& from) : TestReq(nullptr, from) {}
-  inline TestReq(TestReq&& from) noexcept
-      : TestReq(nullptr, std::move(from)) {}
-  inline TestReq& operator=(const TestReq& from) {
+  inline TestInt(const TestInt& from) : TestInt(nullptr, from) {}
+  inline TestInt(TestInt&& from) noexcept
+      : TestInt(nullptr, std::move(from)) {}
+  inline TestInt& operator=(const TestInt& from) {
     CopyFrom(from);
     return *this;
   }
-  inline TestReq& operator=(TestReq&& from) noexcept {
+  inline TestInt& operator=(TestInt&& from) noexcept {
     if (this == &from) return *this;
     if (GetArena() == from.GetArena()
 #ifdef PROTOBUF_FORCE_COPY_IN_MOVE
@@ -307,16 +313,16 @@ class TestReq final : public ::google::protobuf::Message
   static const ::google::protobuf::Reflection* GetReflection() {
     return default_instance().GetMetadata().reflection;
   }
-  static const TestReq& default_instance() {
+  static const TestInt& default_instance() {
     return *internal_default_instance();
   }
-  static inline const TestReq* internal_default_instance() {
-    return reinterpret_cast<const TestReq*>(
-        &_TestReq_default_instance_);
+  static inline const TestInt* internal_default_instance() {
+    return reinterpret_cast<const TestInt*>(
+        &_TestInt_default_instance_);
   }
   static constexpr int kIndexInFileMessages = 0;
-  friend void swap(TestReq& a, TestReq& b) { a.Swap(&b); }
-  inline void Swap(TestReq* other) {
+  friend void swap(TestInt& a, TestInt& b) { a.Swap(&b); }
+  inline void Swap(TestInt* other) {
     if (other == this) return;
 #ifdef PROTOBUF_FORCE_COPY_IN_SWAP
     if (GetArena() != nullptr && GetArena() == other->GetArena()) {
@@ -328,7 +334,7 @@ class TestReq final : public ::google::protobuf::Message
       ::google::protobuf::internal::GenericSwap(this, other);
     }
   }
-  void UnsafeArenaSwap(TestReq* other) {
+  void UnsafeArenaSwap(TestInt* other) {
     if (other == this) return;
     ABSL_DCHECK(GetArena() == other->GetArena());
     InternalSwap(other);
@@ -336,13 +342,13 @@ class TestReq final : public ::google::protobuf::Message
 
   // implements Message ----------------------------------------------
 
-  TestReq* New(::google::protobuf::Arena* arena = nullptr) const PROTOBUF_FINAL {
-    return ::google::protobuf::Message::DefaultConstruct<TestReq>(arena);
+  TestInt* New(::google::protobuf::Arena* arena = nullptr) const PROTOBUF_FINAL {
+    return ::google::protobuf::Message::DefaultConstruct<TestInt>(arena);
   }
   using ::google::protobuf::Message::CopyFrom;
-  void CopyFrom(const TestReq& from);
+  void CopyFrom(const TestInt& from);
   using ::google::protobuf::Message::MergeFrom;
-  void MergeFrom(const TestReq& from) { TestReq::MergeImpl(*this, from); }
+  void MergeFrom(const TestInt& from) { TestInt::MergeImpl(*this, from); }
 
   private:
   static void MergeImpl(
@@ -379,16 +385,16 @@ class TestReq final : public ::google::protobuf::Message
   private:
   void SharedCtor(::google::protobuf::Arena* arena);
   void SharedDtor();
-  void InternalSwap(TestReq* other);
+  void InternalSwap(TestInt* other);
  private:
   friend class ::google::protobuf::internal::AnyMetadata;
-  static ::absl::string_view FullMessageName() { return "sample.TestReq"; }
+  static ::absl::string_view FullMessageName() { return "TestPacket.TestInt"; }
 
  protected:
-  explicit TestReq(::google::protobuf::Arena* arena);
-  TestReq(::google::protobuf::Arena* arena, const TestReq& from);
-  TestReq(::google::protobuf::Arena* arena, TestReq&& from) noexcept
-      : TestReq(arena) {
+  explicit TestInt(::google::protobuf::Arena* arena);
+  TestInt(::google::protobuf::Arena* arena, const TestInt& from);
+  TestInt(::google::protobuf::Arena* arena, TestInt&& from) noexcept
+      : TestInt(arena) {
     *this = ::std::move(from);
   }
   const ::google::protobuf::Message::ClassData* GetClassData() const PROTOBUF_FINAL;
@@ -400,20 +406,20 @@ class TestReq final : public ::google::protobuf::Message
 
   // accessors -------------------------------------------------------
   enum : int {
-    kTestIdFieldNumber = 1,
+    kValueFieldNumber = 1,
   };
-  // optional uint32 TestId = 1;
-  bool has_testid() const;
-  void clear_testid() ;
-  ::uint32_t testid() const;
-  void set_testid(::uint32_t value);
+  // optional uint32 value = 1;
+  bool has_value() const;
+  void clear_value() ;
+  ::uint32_t value() const;
+  void set_value(::uint32_t value);
 
   private:
-  ::uint32_t _internal_testid() const;
-  void _internal_set_testid(::uint32_t value);
+  ::uint32_t _internal_value() const;
+  void _internal_set_value(::uint32_t value);
 
   public:
-  // @@protoc_insertion_point(class_scope:sample.TestReq)
+  // @@protoc_insertion_point(class_scope:TestPacket.TestInt)
  private:
   class _Internal;
   friend class ::google::protobuf::internal::TcParser;
@@ -423,7 +429,7 @@ class TestReq final : public ::google::protobuf::Message
       _table_;
 
   static constexpr const void* _raw_default_instance_ =
-      &_TestReq_default_instance_;
+      &_TestInt_default_instance_;
 
   friend class ::google::protobuf::MessageLite;
   friend class ::google::protobuf::Arena;
@@ -438,10 +444,10 @@ class TestReq final : public ::google::protobuf::Message
                           ::google::protobuf::Arena* arena);
     inline explicit Impl_(::google::protobuf::internal::InternalVisibility visibility,
                           ::google::protobuf::Arena* arena, const Impl_& from,
-                          const TestReq& from_msg);
+                          const TestInt& from_msg);
     ::google::protobuf::internal::HasBits<1> _has_bits_;
     mutable ::google::protobuf::internal::CachedSize _cached_size_;
-    ::uint32_t testid_;
+    ::uint32_t value_;
     PROTOBUF_TSAN_DECLARE_MEMBER
   };
   union { Impl_ _impl_; };
@@ -462,66 +468,109 @@ class TestReq final : public ::google::protobuf::Message
 #endif  // __GNUC__
 // -------------------------------------------------------------------
 
-// TestReq
+// TestInt
 
-// optional uint32 TestId = 1;
-inline bool TestReq::has_testid() const {
+// optional uint32 value = 1;
+inline bool TestInt::has_value() const {
   bool value = (_impl_._has_bits_[0] & 0x00000001u) != 0;
   return value;
 }
-inline void TestReq::clear_testid() {
+inline void TestInt::clear_value() {
   ::google::protobuf::internal::TSanWrite(&_impl_);
-  _impl_.testid_ = 0u;
+  _impl_.value_ = 0u;
   _impl_._has_bits_[0] &= ~0x00000001u;
 }
-inline ::uint32_t TestReq::testid() const {
-  // @@protoc_insertion_point(field_get:sample.TestReq.TestId)
-  return _internal_testid();
+inline ::uint32_t TestInt::value() const {
+  // @@protoc_insertion_point(field_get:TestPacket.TestInt.value)
+  return _internal_value();
 }
-inline void TestReq::set_testid(::uint32_t value) {
-  _internal_set_testid(value);
+inline void TestInt::set_value(::uint32_t value) {
+  _internal_set_value(value);
   _impl_._has_bits_[0] |= 0x00000001u;
-  // @@protoc_insertion_point(field_set:sample.TestReq.TestId)
+  // @@protoc_insertion_point(field_set:TestPacket.TestInt.value)
 }
-inline ::uint32_t TestReq::_internal_testid() const {
+inline ::uint32_t TestInt::_internal_value() const {
   ::google::protobuf::internal::TSanRead(&_impl_);
-  return _impl_.testid_;
+  return _impl_.value_;
 }
-inline void TestReq::_internal_set_testid(::uint32_t value) {
+inline void TestInt::_internal_set_value(::uint32_t value) {
   ::google::protobuf::internal::TSanWrite(&_impl_);
-  _impl_.testid_ = value;
+  _impl_.value_ = value;
 }
 
 // -------------------------------------------------------------------
 
-// TestResult
+// TestString
 
-// optional uint32 TestId = 1;
-inline bool TestResult::has_testid() const {
+// optional string value = 1;
+inline bool TestString::has_value() const {
   bool value = (_impl_._has_bits_[0] & 0x00000001u) != 0;
   return value;
 }
-inline void TestResult::clear_testid() {
+inline void TestString::clear_value() {
   ::google::protobuf::internal::TSanWrite(&_impl_);
-  _impl_.testid_ = 0u;
+  _impl_.value_.ClearToEmpty();
   _impl_._has_bits_[0] &= ~0x00000001u;
 }
-inline ::uint32_t TestResult::testid() const {
-  // @@protoc_insertion_point(field_get:sample.TestResult.TestId)
-  return _internal_testid();
+inline const std::string& TestString::value() const
+    ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  // @@protoc_insertion_point(field_get:TestPacket.TestString.value)
+  return _internal_value();
 }
-inline void TestResult::set_testid(::uint32_t value) {
-  _internal_set_testid(value);
-  _impl_._has_bits_[0] |= 0x00000001u;
-  // @@protoc_insertion_point(field_set:sample.TestResult.TestId)
-}
-inline ::uint32_t TestResult::_internal_testid() const {
-  ::google::protobuf::internal::TSanRead(&_impl_);
-  return _impl_.testid_;
-}
-inline void TestResult::_internal_set_testid(::uint32_t value) {
+template <typename Arg_, typename... Args_>
+inline PROTOBUF_ALWAYS_INLINE void TestString::set_value(Arg_&& arg,
+                                                     Args_... args) {
   ::google::protobuf::internal::TSanWrite(&_impl_);
-  _impl_.testid_ = value;
+  _impl_._has_bits_[0] |= 0x00000001u;
+  _impl_.value_.Set(static_cast<Arg_&&>(arg), args..., GetArena());
+  // @@protoc_insertion_point(field_set:TestPacket.TestString.value)
+}
+inline std::string* TestString::mutable_value() ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  std::string* _s = _internal_mutable_value();
+  // @@protoc_insertion_point(field_mutable:TestPacket.TestString.value)
+  return _s;
+}
+inline const std::string& TestString::_internal_value() const {
+  ::google::protobuf::internal::TSanRead(&_impl_);
+  return _impl_.value_.Get();
+}
+inline void TestString::_internal_set_value(const std::string& value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_._has_bits_[0] |= 0x00000001u;
+  _impl_.value_.Set(value, GetArena());
+}
+inline std::string* TestString::_internal_mutable_value() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_._has_bits_[0] |= 0x00000001u;
+  return _impl_.value_.Mutable( GetArena());
+}
+inline std::string* TestString::release_value() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  // @@protoc_insertion_point(field_release:TestPacket.TestString.value)
+  if ((_impl_._has_bits_[0] & 0x00000001u) == 0) {
+    return nullptr;
+  }
+  _impl_._has_bits_[0] &= ~0x00000001u;
+  auto* released = _impl_.value_.Release();
+  #ifdef PROTOBUF_FORCE_COPY_DEFAULT_STRING
+  _impl_.value_.Set("", GetArena());
+  #endif  // PROTOBUF_FORCE_COPY_DEFAULT_STRING
+  return released;
+}
+inline void TestString::set_allocated_value(std::string* value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  if (value != nullptr) {
+    _impl_._has_bits_[0] |= 0x00000001u;
+  } else {
+    _impl_._has_bits_[0] &= ~0x00000001u;
+  }
+  _impl_.value_.SetAllocated(value, GetArena());
+  #ifdef PROTOBUF_FORCE_COPY_DEFAULT_STRING
+        if (_impl_.value_.IsDefault()) {
+          _impl_.value_.Set("", GetArena());
+        }
+  #endif  // PROTOBUF_FORCE_COPY_DEFAULT_STRING
+  // @@protoc_insertion_point(field_set_allocated:TestPacket.TestString.value)
 }
 
 #ifdef __GNUC__
@@ -529,7 +578,7 @@ inline void TestResult::_internal_set_testid(::uint32_t value) {
 #endif  // __GNUC__
 
 // @@protoc_insertion_point(namespace_scope)
-}  // namespace sample
+}  // namespace TestPacket
 
 
 // @@protoc_insertion_point(global_scope)

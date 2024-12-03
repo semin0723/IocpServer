@@ -11,6 +11,8 @@ public:
 	PacketDispatcher();
 	~PacketDispatcher();
 
+	void Initialize() {}
+
 	void SaveRecvPacket(std::unique_ptr<Packet>& packet);
 	void SwapRecvPacketQueue(PacketQueue& queue);
 

@@ -57,7 +57,8 @@ enum class PID : short {
 	// TODO : 패킷의 유형을 구분하기 위한 ID를 추가하면 됩니다.
 	// TODO : 전달할 메시지의 유형 전부 작성해주셔야 합니다.
 	Default = 0,
-	
+	Int,
+	String,
 
 };
 
