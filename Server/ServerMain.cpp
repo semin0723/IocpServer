@@ -111,6 +111,8 @@ bool ServerMain::Initialize()
 #else
 	_session = new Session();
 	_session->Initialize(_socket);
+
+	HANDLE handle = CreateIoCompletionPort((HANDLE)_socket->GetSocket(), completionPort, (ULONG_PTR)_session, 0);
 #endif
 	for (int i = 0; i < threadCount; i++) {
 		CreateIOThread(completionPort);
@@ -191,8 +193,8 @@ void ServerMain::CreateIOThread(HANDLE completionPort)
 				printf("작업이 완료되지 않았습니다.\n");
 			}
 
-#ifdef _SERVER_
 			Session* session = (Session*)completionKey;
+#ifdef _SERVER_
 			if (res == false && byteTransferred == 0) {
 				// 클라이언트에서 closesocket 호출
 				int error = WSAGetLastError();
@@ -204,7 +206,7 @@ void ServerMain::CreateIOThread(HANDLE completionPort)
 				}
 				continue;
 			}
-
+#endif
 			int status = session->CheckOverlappedStatus(overlapped);
 
 			if (status == 1) {
@@ -213,16 +215,7 @@ void ServerMain::CreateIOThread(HANDLE completionPort)
 			else {
 				session->SendUpdate();
 			}
-#else
-			int status = _session->CheckOverlappedStatus(overlapped);
 
-			if (status == 1) {
-				_session->RecvUpdate();
-			}
-			else {
-				_session->SendUpdate();
-			}
-#endif
 
 		}
 	};
