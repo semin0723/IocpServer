@@ -35,15 +35,17 @@ bool ServerMain::Initialize()
 		// Buffer
 		WritePrivateProfileString(L"Buffer", L"Size", std::to_wstring(SizePerBuffer).c_str(), configFilePath.c_str());
 #ifdef _SERVER_
-		WritePrivateProfileString(L"Buffer", L"BlockPerCount", std::to_wstring(SizePerBuffer).c_str(), configFilePath.c_str());
+		WritePrivateProfileString(L"Buffer", L"BufferPoolSize", std::to_wstring(BufferPoolCount).c_str(), configFilePath.c_str());
 		WritePrivateProfileString(L"Pool", L"PacketPool", std::to_wstring(PacketPoolCount).c_str(), configFilePath.c_str());
+#else
+		WritePrivateProfileString(L"Buffer", L"BufferPoolSize", std::to_wstring(3).c_str(), configFilePath.c_str());
 #endif
 	}
 	
 	port = GetPrivateProfileInt(L"Server", L"Port", ServerPort, configFilePath.c_str());
 	bufferSize = GetPrivateProfileInt(L"Buffer", L"Size", SizePerBuffer, configFilePath.c_str());
+	bufferPoolCount = GetPrivateProfileInt(L"Buffer", L"BufferPoolSize", BufferPoolCount, configFilePath.c_str());
 #ifdef _SERVER_
-	bufferPoolCount = GetPrivateProfileInt(L"Buffer", L"BlockPerCount", BufferPoolCount, configFilePath.c_str());
 	int threadCount = GetPrivateProfileInt(L"Server", L"ThreadCount", ThreadCount, configFilePath.c_str());
 	int packetExpandSize = GetPrivateProfileInt(L"Pool", L"PacketPool", PacketPoolCount, configFilePath.c_str());
 #else
@@ -53,7 +55,8 @@ bool ServerMain::Initialize()
 	int threadCount = 1;
 #endif	
 
-	printf("Target Platform : %s\n", WStringToString(platform));
+	std::string convertedStr = WStringToString(platform);
+	std::cout << "Target Platform : " << convertedStr << "\n";
 
 	printf("Server Port : %d\n", port);
 	printf("Buffer Size : %d\n", bufferSize);
@@ -64,11 +67,12 @@ bool ServerMain::Initialize()
 	printf("Thread Count : %d\n", threadCount);
 	printf("Config Setting Complete\n");
 
-	// TODO - 2 : Create Pools -> Server Only
-#ifdef _SERVER_
+	// TODO - 2 : Create Pools
+	// TODO - 2 : BufferPool -> client : count = 3, server : custom
 	BufferPool::GetInstance()->Initialize(bufferSize, bufferPoolCount);
 	printf("BufferPool Initialize Completed\n");
 
+#ifdef _SERVER_
 	PacketPool::GetInstance()->Initialize(packetExpandSize);
 	printf("PacketPool Initialize Completed\n");
 
@@ -160,7 +164,17 @@ void ServerMain::ReleaseThread()
 {
 
 }
-
+#ifdef _SERVER_
+void ServerMain::SendUpdate(SessionID sid)
+{
+	_sessionMap[sid]->SendUpdate();
+}
+#else
+void ServerMain::SendUpdate()
+{
+	_session->SendUpdate();
+}
+#endif
 #ifdef _SERVER_
 void ServerMain::CreateAcceptThread(HANDLE completionPort)
 {
@@ -185,15 +199,17 @@ void ServerMain::CreateAcceptThread(HANDLE completionPort)
 			Session* newSession = new Session();
 			newSession->Initialize(socket);
 
-			HANDLE handle = CreateIoCompletionPort((HANDLE)_socket->GetSocket(), completionPort, (ULONG_PTR)newSession, 0);
+			HANDLE handle = CreateIoCompletionPort((HANDLE)client, completionPort, (ULONG_PTR)newSession, 0);
 			if (handle == nullptr) {
 				printf("Invalid Handle. [Location : CreateAcceptThread]\n");
 			}
-
+			newSession->RecvUpdate();
 			{
 				Lock lock(_mutex);
 				_sessionMap.insert({ newSession->GetSessionId(), newSession });
 			}
+			PacketDispatcher::GetInstance()->SessionCreated(newSession->GetSessionId());
+
 			printf("Session Created\n");
 		}
 	};
@@ -212,6 +228,8 @@ void ServerMain::CreateIOThread(HANDLE completionPort)
 			bool res = true;
 
 			res = GetQueuedCompletionStatus(completionPort, &byteTransferred, &completionKey, &overlapped, INFINITE);
+
+			printf("byteTransferred %d\n", byteTransferred);
 
 			if (overlapped == nullptr) {
 				continue;
@@ -233,6 +251,8 @@ void ServerMain::CreateIOThread(HANDLE completionPort)
 				if (_sessionMap.find(id) != _sessionMap.end()) {
 					delete _sessionMap[id];
 					_sessionMap.erase(id);
+
+					printf("Session Deleted\n");
 				}
 				continue;
 			}

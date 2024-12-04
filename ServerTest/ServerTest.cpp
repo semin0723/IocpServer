@@ -23,7 +23,7 @@ int main()
             interval -= throttling;
             if (recvPackets.empty()) {
                 dispatcher->SwapRecvPacketQueue(recvPackets);
-                printf("PacketDispatcher Swaped\n");
+                //printf("PacketDispatcher Swaped\n");
             }
 
             while (!recvPackets.empty()) {

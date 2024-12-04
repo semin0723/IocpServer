@@ -1,10 +1,10 @@
 #include "UtilFunctions.h"
 #include "../NetDefine.h"
 
-void MergePacket(Packet& packet, std::string& message)
+void MergePacket(std::unique_ptr<Packet>& packet, std::string& message)
 {
-    memcpy(packet._data, message.c_str(), message.size());
-    packet._header._packetSize = PacketHeaderSize + message.size();
+    memcpy(packet->_data, message.c_str(), message.size());
+    packet->_header._packetSize = PacketHeaderSize + message.size();
 }
 
 std::string WStringToString(std::wstring& data)

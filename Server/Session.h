@@ -36,6 +36,8 @@ private:
 	int _bufferSize = 0;
 	char* _recvBuffer = nullptr;
 	char* _sendBuffer = nullptr;
+	int _sendBufferSize = 0;
+	PacketQueue _pendingSend;
 
 	OVERLAPPED _recvOverlapped;
 	OVERLAPPED _sendOverlapped;

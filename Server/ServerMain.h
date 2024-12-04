@@ -22,6 +22,12 @@ public:
 	// 서버에서 종료 패킷을 전송하고, 확인패킷을 받았을 때,
 	// 모든 연결된 세션이 연결 종료 된 후 호출해야 합니다.
 	void ReleaseThread();
+
+#ifdef _SERVER_
+	void SendUpdate(SessionID sid);
+#else
+	void SendUpdate();
+#endif
 private:
 	Socket* _socket = nullptr;
 
