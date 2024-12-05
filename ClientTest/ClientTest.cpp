@@ -11,7 +11,7 @@ int main()
 		int num;
 		std::cin >> num;
 
-		for (int i = 0; i < 1000; i++) {
+		for (int i = 0; i < 1000000; i++) {
 			std::unique_ptr<Packet> packet = std::make_unique<Packet>();
 			packet->_header._packetId = (short)PID::Int;
 			TestPacket::TestInt msg;

@@ -46,6 +46,8 @@ bool Session::RecvUpdate()
 
 bool Session::SendUpdate()
 {
+	Lock lock(_mutex);
+
 	if (_pendingSend.empty()) {
 #ifdef _SERVER_
 		PacketDispatcher::GetInstance()->SwapSendPacketQueue(_pendingSend, _sessionId);

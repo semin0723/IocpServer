@@ -32,6 +32,8 @@ private:
 	// 여기서 생성된 완전한 패킷에 대해 packet queue에 저장.
 	StreamBuffer* _recvTempBuffer = nullptr;
 	
+	std::mutex _mutex;
+
 	// 두 버퍼는 소켓을 이용해 데이터를 전송하거나 받기 위한 위치.
 	int _bufferSize = 0;
 	char* _recvBuffer = nullptr;

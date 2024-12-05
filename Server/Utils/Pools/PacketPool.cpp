@@ -10,7 +10,6 @@ PacketPool::~PacketPool()
 void PacketPool::Initialize(int packetCount)
 {
 	_expandPacketCount = packetCount;
-	_curPoolSize = _expandPacketCount;
 	ExpendPool();
 }
 
