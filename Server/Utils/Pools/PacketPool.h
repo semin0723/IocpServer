@@ -22,6 +22,7 @@ private:
 	std::mutex _mutex;
 
 	int _curPoolSize = 0;
+	int _totalSize = 0;
 	int _expandPacketCount = 100;
 
 	void ExpendPool();

@@ -20,7 +20,7 @@ void PacketPool::AllocPacket(std::unique_ptr<Packet>& packet)
 	_packetPool.pop_front();
 	_curPoolSize--;
 
-	if (_curPoolSize < (_expandPacketCount / 2)) {
+	if (_curPoolSize < (_totalSize / 2)) {
 		ExpendPool();
 	}
 }
@@ -29,6 +29,7 @@ void PacketPool::ReleasePacket(std::unique_ptr<Packet>& packet)
 {
 	Lock lock(_mutex);
 	_packetPool.emplace_back(std::move(packet));
+	_curPoolSize++;
 }
 
 void PacketPool::ExpendPool()
@@ -37,4 +38,5 @@ void PacketPool::ExpendPool()
 		_packetPool.emplace_back(std::make_unique<Packet>());
 	}
 	_curPoolSize += _expandPacketCount;
+	_totalSize += _expandPacketCount;
 }
